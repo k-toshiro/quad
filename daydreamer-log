@@ -1,0 +1,2270 @@
+daydreamer# export CUDA_VISIBLE_DEVICES=1
+root@robot-dev5:~/daydreamer# ./run_lightweight.sh 
+
+Config:
+logdir:                    /root/logdir/20221112-161023  (str)
+run:                       train                         (str)
+seed:                      0                             (int)
+task:                      a1_real                       (str)
+env.amount:                1                             (int)
+env.parallel:              none                          (str)
+env.daemon:                False                         (bool)
+env.repeat:                50                            (int)
+env.size:                  [64, 64]                      (ints)
+env.camera:                -1                            (int)
+env.gray:                  False                         (bool)
+env.length:                250                           (int)
+env.discretize:            0                             (int)
+env.lives:                 False                         (bool)
+env.sticky:                True                          (bool)
+env.episodic:              True                          (bool)
+env.restart:               False                         (bool)
+env.resets:                False                         (bool)
+env.seed:                  0                             (int)
+env.kbreset:               False                         (bool)
+replay:                    fixed                         (str)
+replay_size:               1000000.0                     (float)
+replay_chunk:              32                            (int)
+replay_fixed.length:       40                            (int)
+replay_fixed.prio_starts:  0.0                           (float)
+replay_fixed.prio_ends:    1.0                           (float)
+replay_fixed.sync:         0                             (int)
+replay_fixed.minlen:       0                             (int)
+replay_consec.randomize:   False                         (bool)
+replay_consec.sync:        0                             (int)
+replay_prio.prio_starts:   0.0                           (float)
+replay_prio.prio_ends:     1.0                           (float)
+replay_prio.sync:          0                             (int)
+replay_prio.fraction:      0.1                           (float)
+replay_prio.softmax:       False                         (bool)
+replay_prio.temp:          1.0                           (float)
+replay_prio.constant:      0.0                           (float)
+replay_prio.exponent:      0.5                           (float)
+tf.jit:                    True                          (bool)
+tf.platform:               gpu                           (str)
+tf.precision:              float16                       (str)
+tf.debug_nans:             False                         (bool)
+tf.logical_gpus:           0                             (int)
+tf.dist_dataset:           False                         (bool)
+tf.dist_policy:            False                         (bool)
+tf.tensorfloat:            True                          (bool)
+tf.soft_placement:         False                         (bool)
+tf.growth:                 True                          (bool)
+eval_dir:                                                (str)
+filter:                    _avg                          (str)
+tbtt:                      0                             (int)
+train.steps:               10000000000.0                 (float)
+train.expl_until:          0                             (int)
+train.log_every:           1.0                           (float)
+train.eval_every:          100000.0                      (float)
+train.eval_eps:            1                             (int)
+train.eval_samples:        1                             (int)
+train.train_every:         1                             (int)
+train.train_steps:         1                             (int)
+train.train_fill:          1.0                           (float)
+train.eval_fill:           10000.0                       (float)
+train.pretrain:            1                             (int)
+train.log_zeros:           False                         (bool)
+train.log_keys_video:      [image]                       (strs)
+train.log_keys_sum:        ^$                            (str)
+train.log_keys_mean:       ^$                            (str)
+train.log_keys_max:        ^$                            (str)
+train.sync_every:          20                            (int)
+task_behavior:             Greedy                        (str)
+expl_behavior:             None                          (str)
+transform_rewards:         off                           (str)
+batch_size:                8                             (int)
+data_loader:               tfdata                        (str)
+expl_noise:                0.0                           (float)
+eval_noise:                0.0                           (float)
+priority:                  reward_loss                   (str)
+priority_correct:          0.0                           (float)
+train_wm:                  True                          (bool)
+known_reward:              none                          (str)
+grad_heads:                [decoder, reward, cont]       (strs)
+rssm.units:                256                           (int)
+rssm.deter:                256                           (int)
+rssm.stoch:                32                            (int)
+rssm.classes:              32                            (int)
+rssm.act:                  elu                           (str)
+rssm.norm:                 layer                         (str)
+rssm.initial:              learned2                      (str)
+rssm.unimix:               0.01                          (float)
+rssm.prior_layers:         3                             (int)
+rssm.post_layers:          1                             (int)
+rssm.gru_layers:           1                             (int)
+rssm.unroll:               True                          (bool)
+encoder.mlp_keys:          vector                        (str)
+encoder.cnn_keys:          $^                            (str)
+encoder.act:               elu                           (str)
+encoder.norm:              layer                         (str)
+encoder.mlp_layers:        4                             (int)
+encoder.mlp_units:         512                           (int)
+encoder.cnn:               simple                        (str)
+encoder.cnn_depth:         64                            (int)
+encoder.cnn_kernels:       [4, 4, 4, 4]                  (ints)
+encoder.cnn_blocks:        2                             (int)
+decoder.mlp_keys:          vector                        (str)
+decoder.cnn_keys:          $^                            (str)
+decoder.act:               elu                           (str)
+decoder.norm:              layer                         (str)
+decoder.mlp_layers:        4                             (int)
+decoder.mlp_units:         512                           (int)
+decoder.cnn:               simple                        (str)
+decoder.cnn_depth:         64                            (int)
+decoder.cnn_kernels:       [5, 5, 6, 6]                  (ints)
+decoder.cnn_blocks:        2                             (int)
+decoder.image_dist:        mse                           (str)
+decoder.inputs:            [deter, stoch]                (strs)
+reward_head.layers:        2                             (int)
+reward_head.units:         256                           (int)
+reward_head.act:           elu                           (str)
+reward_head.norm:          layer                         (str)
+reward_head.dist:          symlog                        (str)
+reward_head.outscale:      0.1                           (float)
+reward_head.inputs:        [deter, stoch]                (strs)
+cont_head.layers:          2                             (int)
+cont_head.units:           256                           (int)
+cont_head.act:             elu                           (str)
+cont_head.norm:            layer                         (str)
+cont_head.dist:            binary                        (str)
+cont_head.outscale:        0.1                           (float)
+cont_head.inputs:          [deter, stoch]                (strs)
+loss_scales.kl:            1.0                           (float)
+loss_scales.image:         1.0                           (float)
+loss_scales.reward:        1.0                           (float)
+loss_scales.cont:          1.0                           (float)
+model_opt.opt:             adam                          (str)
+model_opt.lr:              0.0001                        (float)
+model_opt.eps:             1e-06                         (float)
+model_opt.clip:            100.0                         (float)
+model_opt.wd:              0.01                          (float)
+model_opt.wd_pattern:      kernel                        (str)
+model_opt.warmup:          0                             (int)
+wmkl.impl:                 mult                          (str)
+wmkl.scale:                0.1                           (float)
+wmkl.target:               3.5                           (float)
+wmkl.min:                  0.001                         (float)
+wmkl.max:                  1.0                           (float)
+wmkl.vel:                  0.1                           (float)
+wmkl_balance:              0.8                           (float)
+actor.layers:              2                             (int)
+actor.units:               256                           (int)
+actor.act:                 elu                           (str)
+actor.norm:                layer                         (str)
+actor.minstd:              0.01                          (float)
+actor.maxstd:              0.2                           (float)
+actor.outscale:            0.1                           (float)
+actor.unimix:              0.1                           (float)
+actor.inputs:              [deter, stoch]                (strs)
+critic.layers:             2                             (int)
+critic.units:              256                           (int)
+critic.act:                elu                           (str)
+critic.norm:               layer                         (str)
+critic.dist:               symlog                        (str)
+critic.outscale:           0.1                           (float)
+critic.inputs:             [deter, stoch]                (strs)
+actor_opt.opt:             adam                          (str)
+actor_opt.lr:              0.0001                        (float)
+actor_opt.eps:             1e-06                         (float)
+actor_opt.clip:            100.0                         (float)
+actor_opt.wd:              0.01                          (float)
+actor_opt.wd_pattern:      kernel                        (str)
+actor_opt.warmup:          0                             (int)
+critic_opt.opt:            adam                          (str)
+critic_opt.lr:             0.0001                        (float)
+critic_opt.eps:            1e-06                         (float)
+critic_opt.clip:           100.0                         (float)
+critic_opt.wd:             0.01                          (float)
+critic_opt.wd_pattern:     kernel                        (str)
+critic_opt.warmup:         0                             (int)
+actor_dist_disc:           onehot                        (str)
+actor_dist_cont:           normal                        (str)
+discount:                  0.995                         (float)
+imag_horizon:              7                             (int)
+imag_unroll:               True                          (bool)
+return_lambda:             0.95                          (float)
+actor_return:              gve                           (str)
+critic_return:             gve                           (str)
+actor_grad_disc:           reinforce                     (str)
+actor_grad_cont:           backprop                      (str)
+slow_target:               True                          (bool)
+slow_target_update:        100                           (int)
+slow_target_fraction:      1.0                           (float)
+actent.impl:               mult                          (str)
+actent.scale:              0.003                         (float)
+actent.target:             0.5                           (float)
+actent.min:                1e-05                         (float)
+actent.max:                1.0                           (float)
+actent.vel:                0.1                           (float)
+actent_norm:               True                          (bool)
+advnorm.impl:              mean_std                      (str)
+advnorm.decay:             0.99                          (float)
+advnorm.max:               100000000.0                   (float)
+retnorm.impl:              off                           (str)
+retnorm.decay:             0.999                         (float)
+retnorm.max:               100000000.0                   (float)
+scorenorm.impl:            off                           (str)
+scorenorm.decay:           0.99                          (float)
+scorenorm.max:             100000000.0                   (float)
+critic_type:               vfunction                     (str)
+expl_rewards.extr:         0.0                           (float)
+expl_rewards.disag:        0.0                           (float)
+expl_rewards.vae:          0.0                           (float)
+expl_rewards.ctrl:         0.0                           (float)
+expl_rewards.pbe:          0.0                           (float)
+expl_discount:             0.99                          (float)
+expl_retnorm.impl:         std                           (str)
+expl_retnorm.decay:        0.999                         (float)
+expl_retnorm.max:          100000000.0                   (float)
+expl_scorenorm.impl:       off                           (str)
+expl_scorenorm.decay:      0.999                         (float)
+expl_scorenorm.max:        100000000.0                   (float)
+expl_opt.opt:              adam                          (str)
+expl_opt.lr:               0.0001                        (float)
+expl_opt.eps:              1e-06                         (float)
+expl_opt.clip:             100.0                         (float)
+expl_opt.wd:               0.01                          (float)
+expl_opt.warmup:           0                             (int)
+disag_head.layers:         2                             (int)
+disag_head.units:          256                           (int)
+disag_head.act:            elu                           (str)
+disag_head.norm:           layer                         (str)
+disag_head.dist:           mse                           (str)
+disag_head.outscale:       1.0                           (float)
+disag_head.inputs:         [deter, stoch, action]        (strs)
+disag_target:              [stoch]                       (strs)
+disag_models:              8                             (int)
+ctrl_embed.layers:         2                             (int)
+ctrl_embed.units:          256                           (int)
+ctrl_embed.act:            elu                           (str)
+ctrl_embed.norm:           layer                         (str)
+ctrl_embed.dist:           mse                           (str)
+ctrl_embed.inputs:         [deter, stoch]                (strs)
+ctrl_head.layers:          2                             (int)
+ctrl_head.units:           256                           (int)
+ctrl_head.act:             elu                           (str)
+ctrl_head.norm:            layer                         (str)
+ctrl_head.dist:            mse                           (str)
+ctrl_head.inputs:          [current, next]               (strs)
+ctrl_size:                 32                            (int)
+ctrl_opt.opt:              adam                          (str)
+ctrl_opt.lr:               0.0001                        (float)
+ctrl_opt.eps:              1e-06                         (float)
+ctrl_opt.clip:             100.0                         (float)
+ctrl_opt.wd:               0.01                          (float)
+ctrl_opt.warmup:           0                             (int)
+pbe_inputs:                [deter]                       (strs)
+pbe_knn:                   16                            (int)
+expl_enc.layers:           2                             (int)
+expl_enc.units:            256                           (int)
+expl_enc.act:              elu                           (str)
+expl_enc.norm:             layer                         (str)
+expl_enc.dist:             onehot                        (str)
+expl_enc.outscale:         0.1                           (float)
+expl_enc.inputs:           [deter]                       (strs)
+expl_enc.shape:            [8, 8]                        (ints)
+expl_dec.layers:           2                             (int)
+expl_dec.units:            256                           (int)
+expl_dec.act:              elu                           (str)
+expl_dec.norm:             layer                         (str)
+expl_dec.dist:             mse                           (str)
+expl_dec.outscale:         0.1                           (float)
+expl_kl.impl:              mult                          (str)
+expl_kl.scale:             0.1                           (float)
+expl_kl.target:            10.0                          (float)
+expl_kl.min:               0.01                          (float)
+expl_kl.max:               1.0                           (float)
+expl_kl.vel:               0.1                           (float)
+expl_vae_elbo:             False                         (bool)
+expl_when_buffer:          10000.0                       (float)
+expl_when_frac:            0.1                           (float)
+expl_when_every:           50                            (int)
+expl_when_random:          False                         (bool)
+pybullet build time: May 20 2022 19:44:17
+/root/daydreamer/motion_imitation/robots/a1.py:175: RuntimeWarning: invalid value encountered in arccos
+  theta_knee = -np.arccos(
+argv[0]=
+UDP Initialized. Port: 8080 
+Stand up reset called! -1 None
+Stand up reset called! -1 None
+Stand up reset called! 0.0 None
+Traceback (most recent call last):
+  File "embodied/agents/dreamerv3/train.py", line 150, in <module>
+    main()
+  File "embodied/agents/dreamerv3/train.py", line 62, in main
+    agent = agnt.Agent(env.obs_space, env.act_space, step, config)
+  File "/root/daydreamer/embodied/agents/dreamerv3/tfagent.py", line 18, in __init__
+    super().__init__(agent_cls, obs_space, act_space, step, config)
+  File "/root/daydreamer/embodied/agents/dreamerv3/tfagent.py", line 26, in __init__
+    self.strategy = self._setup()
+  File "/root/daydreamer/embodied/agents/dreamerv3/tfagent.py", line 157, in _setup
+    assert len(gpus) >= 1, gpus
+AssertionError: []
+End Safety.
+Closing UDP.
+root@robot-dev5:~/daydreamer# export CUDA_VISIBLE_DEVICES=0
+root@robot-dev5:~/daydreamer# ./run_lightweight.sh 
+
+Config:
+logdir:                    /root/logdir/20221112-161041  (str)
+run:                       train                         (str)
+seed:                      0                             (int)
+task:                      a1_real                       (str)
+env.amount:                1                             (int)
+env.parallel:              none                          (str)
+env.daemon:                False                         (bool)
+env.repeat:                50                            (int)
+env.size:                  [64, 64]                      (ints)
+env.camera:                -1                            (int)
+env.gray:                  False                         (bool)
+env.length:                250                           (int)
+env.discretize:            0                             (int)
+env.lives:                 False                         (bool)
+env.sticky:                True                          (bool)
+env.episodic:              True                          (bool)
+env.restart:               False                         (bool)
+env.resets:                False                         (bool)
+env.seed:                  0                             (int)
+env.kbreset:               False                         (bool)
+replay:                    fixed                         (str)
+replay_size:               1000000.0                     (float)
+replay_chunk:              32                            (int)
+replay_fixed.length:       40                            (int)
+replay_fixed.prio_starts:  0.0                           (float)
+replay_fixed.prio_ends:    1.0                           (float)
+replay_fixed.sync:         0                             (int)
+replay_fixed.minlen:       0                             (int)
+replay_consec.randomize:   False                         (bool)
+replay_consec.sync:        0                             (int)
+replay_prio.prio_starts:   0.0                           (float)
+replay_prio.prio_ends:     1.0                           (float)
+replay_prio.sync:          0                             (int)
+replay_prio.fraction:      0.1                           (float)
+replay_prio.softmax:       False                         (bool)
+replay_prio.temp:          1.0                           (float)
+replay_prio.constant:      0.0                           (float)
+replay_prio.exponent:      0.5                           (float)
+tf.jit:                    True                          (bool)
+tf.platform:               gpu                           (str)
+tf.precision:              float16                       (str)
+tf.debug_nans:             False                         (bool)
+tf.logical_gpus:           0                             (int)
+tf.dist_dataset:           False                         (bool)
+tf.dist_policy:            False                         (bool)
+tf.tensorfloat:            True                          (bool)
+tf.soft_placement:         False                         (bool)
+tf.growth:                 True                          (bool)
+eval_dir:                                                (str)
+filter:                    _avg                          (str)
+tbtt:                      0                             (int)
+train.steps:               10000000000.0                 (float)
+train.expl_until:          0                             (int)
+train.log_every:           1.0                           (float)
+train.eval_every:          100000.0                      (float)
+train.eval_eps:            1                             (int)
+train.eval_samples:        1                             (int)
+train.train_every:         1                             (int)
+train.train_steps:         1                             (int)
+train.train_fill:          1.0                           (float)
+train.eval_fill:           10000.0                       (float)
+train.pretrain:            1                             (int)
+train.log_zeros:           False                         (bool)
+train.log_keys_video:      [image]                       (strs)
+train.log_keys_sum:        ^$                            (str)
+train.log_keys_mean:       ^$                            (str)
+train.log_keys_max:        ^$                            (str)
+train.sync_every:          20                            (int)
+task_behavior:             Greedy                        (str)
+expl_behavior:             None                          (str)
+transform_rewards:         off                           (str)
+batch_size:                8                             (int)
+data_loader:               tfdata                        (str)
+expl_noise:                0.0                           (float)
+eval_noise:                0.0                           (float)
+priority:                  reward_loss                   (str)
+priority_correct:          0.0                           (float)
+train_wm:                  True                          (bool)
+known_reward:              none                          (str)
+grad_heads:                [decoder, reward, cont]       (strs)
+rssm.units:                256                           (int)
+rssm.deter:                256                           (int)
+rssm.stoch:                32                            (int)
+rssm.classes:              32                            (int)
+rssm.act:                  elu                           (str)
+rssm.norm:                 layer                         (str)
+rssm.initial:              learned2                      (str)
+rssm.unimix:               0.01                          (float)
+rssm.prior_layers:         3                             (int)
+rssm.post_layers:          1                             (int)
+rssm.gru_layers:           1                             (int)
+rssm.unroll:               True                          (bool)
+encoder.mlp_keys:          vector                        (str)
+encoder.cnn_keys:          $^                            (str)
+encoder.act:               elu                           (str)
+encoder.norm:              layer                         (str)
+encoder.mlp_layers:        4                             (int)
+encoder.mlp_units:         512                           (int)
+encoder.cnn:               simple                        (str)
+encoder.cnn_depth:         64                            (int)
+encoder.cnn_kernels:       [4, 4, 4, 4]                  (ints)
+encoder.cnn_blocks:        2                             (int)
+decoder.mlp_keys:          vector                        (str)
+decoder.cnn_keys:          $^                            (str)
+decoder.act:               elu                           (str)
+decoder.norm:              layer                         (str)
+decoder.mlp_layers:        4                             (int)
+decoder.mlp_units:         512                           (int)
+decoder.cnn:               simple                        (str)
+decoder.cnn_depth:         64                            (int)
+decoder.cnn_kernels:       [5, 5, 6, 6]                  (ints)
+decoder.cnn_blocks:        2                             (int)
+decoder.image_dist:        mse                           (str)
+decoder.inputs:            [deter, stoch]                (strs)
+reward_head.layers:        2                             (int)
+reward_head.units:         256                           (int)
+reward_head.act:           elu                           (str)
+reward_head.norm:          layer                         (str)
+reward_head.dist:          symlog                        (str)
+reward_head.outscale:      0.1                           (float)
+reward_head.inputs:        [deter, stoch]                (strs)
+cont_head.layers:          2                             (int)
+cont_head.units:           256                           (int)
+cont_head.act:             elu                           (str)
+cont_head.norm:            layer                         (str)
+cont_head.dist:            binary                        (str)
+cont_head.outscale:        0.1                           (float)
+cont_head.inputs:          [deter, stoch]                (strs)
+loss_scales.kl:            1.0                           (float)
+loss_scales.image:         1.0                           (float)
+loss_scales.reward:        1.0                           (float)
+loss_scales.cont:          1.0                           (float)
+model_opt.opt:             adam                          (str)
+model_opt.lr:              0.0001                        (float)
+model_opt.eps:             1e-06                         (float)
+model_opt.clip:            100.0                         (float)
+model_opt.wd:              0.01                          (float)
+model_opt.wd_pattern:      kernel                        (str)
+model_opt.warmup:          0                             (int)
+wmkl.impl:                 mult                          (str)
+wmkl.scale:                0.1                           (float)
+wmkl.target:               3.5                           (float)
+wmkl.min:                  0.001                         (float)
+wmkl.max:                  1.0                           (float)
+wmkl.vel:                  0.1                           (float)
+wmkl_balance:              0.8                           (float)
+actor.layers:              2                             (int)
+actor.units:               256                           (int)
+actor.act:                 elu                           (str)
+actor.norm:                layer                         (str)
+actor.minstd:              0.01                          (float)
+actor.maxstd:              0.2                           (float)
+actor.outscale:            0.1                           (float)
+actor.unimix:              0.1                           (float)
+actor.inputs:              [deter, stoch]                (strs)
+critic.layers:             2                             (int)
+critic.units:              256                           (int)
+critic.act:                elu                           (str)
+critic.norm:               layer                         (str)
+critic.dist:               symlog                        (str)
+critic.outscale:           0.1                           (float)
+critic.inputs:             [deter, stoch]                (strs)
+actor_opt.opt:             adam                          (str)
+actor_opt.lr:              0.0001                        (float)
+actor_opt.eps:             1e-06                         (float)
+actor_opt.clip:            100.0                         (float)
+actor_opt.wd:              0.01                          (float)
+actor_opt.wd_pattern:      kernel                        (str)
+actor_opt.warmup:          0                             (int)
+critic_opt.opt:            adam                          (str)
+critic_opt.lr:             0.0001                        (float)
+critic_opt.eps:            1e-06                         (float)
+critic_opt.clip:           100.0                         (float)
+critic_opt.wd:             0.01                          (float)
+critic_opt.wd_pattern:     kernel                        (str)
+critic_opt.warmup:         0                             (int)
+actor_dist_disc:           onehot                        (str)
+actor_dist_cont:           normal                        (str)
+discount:                  0.995                         (float)
+imag_horizon:              7                             (int)
+imag_unroll:               True                          (bool)
+return_lambda:             0.95                          (float)
+actor_return:              gve                           (str)
+critic_return:             gve                           (str)
+actor_grad_disc:           reinforce                     (str)
+actor_grad_cont:           backprop                      (str)
+slow_target:               True                          (bool)
+slow_target_update:        100                           (int)
+slow_target_fraction:      1.0                           (float)
+actent.impl:               mult                          (str)
+actent.scale:              0.003                         (float)
+actent.target:             0.5                           (float)
+actent.min:                1e-05                         (float)
+actent.max:                1.0                           (float)
+actent.vel:                0.1                           (float)
+actent_norm:               True                          (bool)
+advnorm.impl:              mean_std                      (str)
+advnorm.decay:             0.99                          (float)
+advnorm.max:               100000000.0                   (float)
+retnorm.impl:              off                           (str)
+retnorm.decay:             0.999                         (float)
+retnorm.max:               100000000.0                   (float)
+scorenorm.impl:            off                           (str)
+scorenorm.decay:           0.99                          (float)
+scorenorm.max:             100000000.0                   (float)
+critic_type:               vfunction                     (str)
+expl_rewards.extr:         0.0                           (float)
+expl_rewards.disag:        0.0                           (float)
+expl_rewards.vae:          0.0                           (float)
+expl_rewards.ctrl:         0.0                           (float)
+expl_rewards.pbe:          0.0                           (float)
+expl_discount:             0.99                          (float)
+expl_retnorm.impl:         std                           (str)
+expl_retnorm.decay:        0.999                         (float)
+expl_retnorm.max:          100000000.0                   (float)
+expl_scorenorm.impl:       off                           (str)
+expl_scorenorm.decay:      0.999                         (float)
+expl_scorenorm.max:        100000000.0                   (float)
+expl_opt.opt:              adam                          (str)
+expl_opt.lr:               0.0001                        (float)
+expl_opt.eps:              1e-06                         (float)
+expl_opt.clip:             100.0                         (float)
+expl_opt.wd:               0.01                          (float)
+expl_opt.warmup:           0                             (int)
+disag_head.layers:         2                             (int)
+disag_head.units:          256                           (int)
+disag_head.act:            elu                           (str)
+disag_head.norm:           layer                         (str)
+disag_head.dist:           mse                           (str)
+disag_head.outscale:       1.0                           (float)
+disag_head.inputs:         [deter, stoch, action]        (strs)
+disag_target:              [stoch]                       (strs)
+disag_models:              8                             (int)
+ctrl_embed.layers:         2                             (int)
+ctrl_embed.units:          256                           (int)
+ctrl_embed.act:            elu                           (str)
+ctrl_embed.norm:           layer                         (str)
+ctrl_embed.dist:           mse                           (str)
+ctrl_embed.inputs:         [deter, stoch]                (strs)
+ctrl_head.layers:          2                             (int)
+ctrl_head.units:           256                           (int)
+ctrl_head.act:             elu                           (str)
+ctrl_head.norm:            layer                         (str)
+ctrl_head.dist:            mse                           (str)
+ctrl_head.inputs:          [current, next]               (strs)
+ctrl_size:                 32                            (int)
+ctrl_opt.opt:              adam                          (str)
+ctrl_opt.lr:               0.0001                        (float)
+ctrl_opt.eps:              1e-06                         (float)
+ctrl_opt.clip:             100.0                         (float)
+ctrl_opt.wd:               0.01                          (float)
+ctrl_opt.warmup:           0                             (int)
+pbe_inputs:                [deter]                       (strs)
+pbe_knn:                   16                            (int)
+expl_enc.layers:           2                             (int)
+expl_enc.units:            256                           (int)
+expl_enc.act:              elu                           (str)
+expl_enc.norm:             layer                         (str)
+expl_enc.dist:             onehot                        (str)
+expl_enc.outscale:         0.1                           (float)
+expl_enc.inputs:           [deter]                       (strs)
+expl_enc.shape:            [8, 8]                        (ints)
+expl_dec.layers:           2                             (int)
+expl_dec.units:            256                           (int)
+expl_dec.act:              elu                           (str)
+expl_dec.norm:             layer                         (str)
+expl_dec.dist:             mse                           (str)
+expl_dec.outscale:         0.1                           (float)
+expl_kl.impl:              mult                          (str)
+expl_kl.scale:             0.1                           (float)
+expl_kl.target:            10.0                          (float)
+expl_kl.min:               0.01                          (float)
+expl_kl.max:               1.0                           (float)
+expl_kl.vel:               0.1                           (float)
+expl_vae_elbo:             False                         (bool)
+expl_when_buffer:          10000.0                       (float)
+expl_when_frac:            0.1                           (float)
+expl_when_every:           50                            (int)
+expl_when_random:          False                         (bool)
+pybullet build time: May 20 2022 19:44:17
+/root/daydreamer/motion_imitation/robots/a1.py:175: RuntimeWarning: invalid value encountered in arccos
+  theta_knee = -np.arccos(
+argv[0]=
+UDP Initialized. Port: 8080 
+Stand up reset called! -1 None
+Stand up reset called! -1 None
+Stand up reset called! 0.0 None
+Encoder CNN shapes: {}
+Encoder MLP shapes: {'vector': (16,)}
+Decoder CNN shapes: {}
+Decoder MLP shapes: {'vector': (16,)}
+Synced last 0/0 trajectories.
+Synced last 0/0 trajectories.
+Logdir /root/logdir/20221112-161041
+Fill train dataset (1.0 steps).
+Stand up reset called! -1 None
+Stand up reset called! 0.0 None
+Saved episode: 20221112T161049-488e820ef9874719a0121ecc13bb5f76-len40-rew196.npz
+Saved episode: 20221112T161052-2496fa5fe8b94e6b86d931ea84aec387-len40-rew201.npz
+Saved episode: 20221112T161054-2a82a1e5344d4f069be3c64d73dc8c5c-len40-rew201.npz
+Saved episode: 20221112T161057-bdff4854848c4d29a58b64f6f6271ca5-len40-rew201.npz
+Saved episode: 20221112T161059-b00f752ab31a4fbcb37859ac29e1698a-len40-rew200.npz
+Saved episode: 20221112T161101-76811bcc25024aa98f116066cd71ed6a-len40-rew201.npz
+Skipping short trajectory of length 11.
+Episode has 250 steps and return 1257.6.
+[12550] 
+Tracing train function.
+Found 4624146 model parameters.
+Optimizer applied weight decay to model variables:
+[x] Agent/WorldModel/MLP/DistLayer/Linear/kernel:0
+[x] Agent/WorldModel/MLP/Linear/kernel:0
+[x] Agent/WorldModel/MLP/Linear1/kernel:0
+[x] Agent/WorldModel/MLP1/DistLayer/Linear/kernel:0
+[x] Agent/WorldModel/MLP1/Linear/kernel:0
+[x] Agent/WorldModel/MLP1/Linear1/kernel:0
+[x] Agent/WorldModel/MultiDecoder/MLP/DistLayer/Linear/kernel:0
+[x] Agent/WorldModel/MultiDecoder/MLP/Linear/kernel:0
+[x] Agent/WorldModel/MultiDecoder/MLP/Linear1/kernel:0
+[x] Agent/WorldModel/MultiDecoder/MLP/Linear2/kernel:0
+[x] Agent/WorldModel/MultiDecoder/MLP/Linear3/kernel:0
+[x] Agent/WorldModel/MultiEncoder/MLP/Linear/kernel:0
+[x] Agent/WorldModel/MultiEncoder/MLP/Linear1/kernel:0
+[x] Agent/WorldModel/MultiEncoder/MLP/Linear2/kernel:0
+[x] Agent/WorldModel/MultiEncoder/MLP/Linear3/kernel:0
+[x] Agent/WorldModel/RSSM/Linear/kernel:0
+[x] Agent/WorldModel/RSSM/Linear1/kernel:0
+[x] Agent/WorldModel/RSSM/Linear2/kernel:0
+[x] Agent/WorldModel/RSSM/Linear3/kernel:0
+[x] Agent/WorldModel/RSSM/Linear4/kernel:0
+[x] Agent/WorldModel/RSSM/Linear5/kernel:0
+[x] Agent/WorldModel/RSSM/Linear6/kernel:0
+[x] Agent/WorldModel/RSSM/Linear7/kernel:0
+[ ] Agent/WorldModel/MLP/DistLayer/Linear/bias:0
+[ ] Agent/WorldModel/MLP/Linear/Norm/bias:0
+[ ] Agent/WorldModel/MLP/Linear/Norm/scale:0
+[ ] Agent/WorldModel/MLP/Linear1/Norm/bias:0
+[ ] Agent/WorldModel/MLP/Linear1/Norm/scale:0
+[ ] Agent/WorldModel/MLP1/DistLayer/Linear/bias:0
+[ ] Agent/WorldModel/MLP1/Linear/Norm/bias:0
+[ ] Agent/WorldModel/MLP1/Linear/Norm/scale:0
+[ ] Agent/WorldModel/MLP1/Linear1/Norm/bias:0
+[ ] Agent/WorldModel/MLP1/Linear1/Norm/scale:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/DistLayer/Linear/bias:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear/Norm/bias:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear/Norm/scale:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear1/Norm/bias:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear1/Norm/scale:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear2/Norm/bias:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear2/Norm/scale:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear3/Norm/bias:0
+[ ] Agent/WorldModel/MultiDecoder/MLP/Linear3/Norm/scale:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear/Norm/bias:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear/Norm/scale:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear1/Norm/bias:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear1/Norm/scale:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear2/Norm/bias:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear2/Norm/scale:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear3/Norm/bias:0
+[ ] Agent/WorldModel/MultiEncoder/MLP/Linear3/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear/Norm/bias:0
+[ ] Agent/WorldModel/RSSM/Linear/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear1/Norm/bias:0
+[ ] Agent/WorldModel/RSSM/Linear1/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear2/Norm/bias:0
+[ ] Agent/WorldModel/RSSM/Linear2/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear3/bias:0
+[ ] Agent/WorldModel/RSSM/Linear4/Norm/bias:0
+[ ] Agent/WorldModel/RSSM/Linear4/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear5/Norm/bias:0
+[ ] Agent/WorldModel/RSSM/Linear5/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear6/Norm/bias:0
+[ ] Agent/WorldModel/RSSM/Linear6/Norm/scale:0
+[ ] Agent/WorldModel/RSSM/Linear7/bias:0
+[ ] Agent/WorldModel/RSSM/initial_deter:0
+
+Found 394497 critic parameters.
+Optimizer applied weight decay to critic variables:
+[x] Agent/Greedy/VFunction/MLP/DistLayer/Linear/kernel:0
+[x] Agent/Greedy/VFunction/MLP/Linear/kernel:0
+[x] Agent/Greedy/VFunction/MLP/Linear1/kernel:0
+[ ] Agent/Greedy/VFunction/MLP/DistLayer/Linear/bias:0
+[ ] Agent/Greedy/VFunction/MLP/Linear/Norm/bias:0
+[ ] Agent/Greedy/VFunction/MLP/Linear/Norm/scale:0
+[ ] Agent/Greedy/VFunction/MLP/Linear1/Norm/bias:0
+[ ] Agent/Greedy/VFunction/MLP/Linear1/Norm/scale:0
+
+Found 400408 actor parameters.
+Optimizer applied weight decay to actor variables:
+[x] Agent/Greedy/ImagActorCritic/MLP/DistLayer/Linear/kernel:0
+[x] Agent/Greedy/ImagActorCritic/MLP/DistLayer/Linear1/kernel:0
+[x] Agent/Greedy/ImagActorCritic/MLP/Linear/kernel:0
+[x] Agent/Greedy/ImagActorCritic/MLP/Linear1/kernel:0
+[ ] Agent/Greedy/ImagActorCritic/MLP/DistLayer/Linear/bias:0
+[ ] Agent/Greedy/ImagActorCritic/MLP/DistLayer/Linear1/bias:0
+[ ] Agent/Greedy/ImagActorCritic/MLP/Linear/Norm/bias:0
+[ ] Agent/Greedy/ImagActorCritic/MLP/Linear/Norm/scale:0
+[ ] Agent/Greedy/ImagActorCritic/MLP/Linear1/Norm/bias:0
+[ ] Agent/Greedy/ImagActorCritic/MLP/Linear1/Norm/scale:0
+
+Tracing train function.
+Existing checkpoint not found.
+Saving checkpoint: /root/logdir/20221112-161041/checkpoint.pkl
+Saving module with 263 tensors and 16651667 parameters.
+Start training loop.
+Tracing policy function.
+Tracing report function.
+
+
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[748750] train/reward_avg 5.9 / train/cont_avg 1 / report/reward_avg 5.9 / report/cont_avg 1 / timer/agent.policy_avg 4.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 60 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[748800] train/reward_avg 6.16 / train/cont_avg 1 / report/reward_avg 6.16 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 60 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[748850] train/reward_avg 5.35 / train/cont_avg 1 / report/reward_avg 5.35 / report/cont_avg 1 / timer/agent.policy_avg 3.5e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.5e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[748900] train/reward_avg 5.62 / train/cont_avg 1 / report/reward_avg 5.62 / report/cont_avg 1 / timer/agent.policy_avg 5.1e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[748950] train/reward_avg 5.48 / train/cont_avg 1 / report/reward_avg 5.48 / report/cont_avg 1 / timer/agent.policy_avg 3.6e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749000] train/reward_avg 5.7 / train/cont_avg 1 / report/reward_avg 5.7 / report/cont_avg 1 / timer/agent.policy_avg 4.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 60 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[749050] train/reward_avg 5.88 / train/cont_avg 1 / report/reward_avg 5.88 / report/cont_avg 1 / timer/agent.policy_avg 3.5e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749100] train/reward_avg 5.06 / train/cont_avg 1 / report/reward_avg 5.06 / report/cont_avg 1 / timer/agent.policy_avg 3.2e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749150] train/reward_avg 6.96 / train/cont_avg 1 / report/reward_avg 6.96 / report/cont_avg 1 / timer/agent.policy_avg 5.1e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[749200] train/reward_avg 6.4 / train/cont_avg 1 / report/reward_avg 6.4 / report/cont_avg 1 / timer/agent.policy_avg 5.1e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749250] train/reward_avg 6.17 / train/cont_avg 1 / report/reward_avg 6.17 / report/cont_avg 1 / timer/agent.policy_avg 4.7e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.4e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[749300] train/reward_avg 5.96 / train/cont_avg 1 / report/reward_avg 5.96 / report/cont_avg 1 / timer/agent.policy_avg 5.2e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749350] train/reward_avg 6.43 / train/cont_avg 1 / report/reward_avg 6.43 / report/cont_avg 1 / timer/agent.policy_avg 3.1e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749400] train/reward_avg 5.66 / train/cont_avg 1 / report/reward_avg 5.66 / report/cont_avg 1 / timer/agent.policy_avg 4.3e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[749450] train/reward_avg 5.47 / train/cont_avg 1 / report/reward_avg 5.47 / report/cont_avg 1 / timer/agent.policy_avg 5.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[749500] train/reward_avg 5.17 / train/cont_avg 1 / report/reward_avg 5.17 / report/cont_avg 1 / timer/agent.policy_avg 3.9e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[749550] train/reward_avg 5.31 / train/cont_avg 1 / report/reward_avg 5.31 / report/cont_avg 1 / timer/agent.policy_avg 5.3e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749600] train/reward_avg 6.35 / train/cont_avg 1 / report/reward_avg 6.35 / report/cont_avg 1 / timer/agent.policy_avg 6.5e-3 / timer/env.step_avg 0.18 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749650] train/reward_avg 5.61 / train/cont_avg 1 / report/reward_avg 5.61 / report/cont_avg 1 / timer/agent.policy_avg 6.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[749700] train/reward_avg 6.19 / train/cont_avg 1 / report/reward_avg 6.19 / report/cont_avg 1 / timer/agent.policy_avg 4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[749750] train/reward_avg 6.15 / train/cont_avg 1 / report/reward_avg 6.15 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 37 C
+[749800] train/reward_avg 5.37 / train/cont_avg 1 / report/reward_avg 5.37 / report/cont_avg 1 / timer/agent.policy_avg 3.3e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749850] train/reward_avg 5.44 / train/cont_avg 1 / report/reward_avg 5.44 / report/cont_avg 1 / timer/agent.policy_avg 6.5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749900] train/reward_avg 5.83 / train/cont_avg 1 / report/reward_avg 5.83 / report/cont_avg 1 / timer/agent.policy_avg 4.7e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[749950] train/reward_avg 5.61 / train/cont_avg 1 / report/reward_avg 5.61 / report/cont_avg 1 / timer/agent.policy_avg 5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750000] train/reward_avg 5.51 / train/cont_avg 1 / report/reward_avg 5.51 / report/cont_avg 1 / timer/agent.policy_avg 4.5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[750050] train/reward_avg 5.98 / train/cont_avg 1 / report/reward_avg 5.98 / report/cont_avg 1 / timer/agent.policy_avg 6e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[750100] train/reward_avg 5.6 / train/cont_avg 1 / report/reward_avg 5.6 / report/cont_avg 1 / timer/agent.policy_avg 5.4e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750150] train/reward_avg 6.56 / train/cont_avg 1 / report/reward_avg 6.56 / report/cont_avg 1 / timer/agent.policy_avg 3.5e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750200] train/reward_avg 6.15 / train/cont_avg 1 / report/reward_avg 6.15 / report/cont_avg 1 / timer/agent.policy_avg 3.2e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750250] train/reward_avg 5.52 / train/cont_avg 1 / report/reward_avg 5.52 / report/cont_avg 1 / timer/agent.policy_avg 4.3e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[750300] train/reward_avg 5.64 / train/cont_avg 1 / report/reward_avg 5.64 / report/cont_avg 1 / timer/agent.policy_avg 4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 37 C
+[750350] train/reward_avg 5.94 / train/cont_avg 1 / report/reward_avg 5.94 / report/cont_avg 1 / timer/agent.policy_avg 6.1e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[750400] train/reward_avg 5.32 / train/cont_avg 1 / report/reward_avg 5.32 / report/cont_avg 1 / timer/agent.policy_avg 3.3e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+Saved episode: 20221112T171547-e74e4a9ad3d648a0a48b9fce262d97cd-len40-rew226.npz
+[750450] train/reward_avg 5.79 / train/cont_avg 1 / report/reward_avg 5.79 / report/cont_avg 1 / timer/agent.policy_avg 3.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[750500] train/reward_avg 6.26 / train/cont_avg 1 / report/reward_avg 6.26 / report/cont_avg 1 / timer/agent.policy_avg 5.3e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750550] train/reward_avg 5.68 / train/cont_avg 1 / report/reward_avg 5.68 / report/cont_avg 1 / timer/agent.policy_avg 5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.07 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750600] train/reward_avg 6.02 / train/cont_avg 1 / report/reward_avg 6.02 / report/cont_avg 1 / timer/agent.policy_avg 4.5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750650] train/reward_avg 5.56 / train/cont_avg 1 / report/reward_avg 5.56 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750700] train/reward_avg 5.96 / train/cont_avg 1 / report/reward_avg 5.96 / report/cont_avg 1 / timer/agent.policy_avg 5.6e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750750] train/reward_avg 6.4 / train/cont_avg 1 / report/reward_avg 6.4 / report/cont_avg 1 / timer/agent.policy_avg 6e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[750800] train/reward_avg 5.76 / train/cont_avg 1 / report/reward_avg 5.76 / report/cont_avg 1 / timer/agent.policy_avg 3.3e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 1.7e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 51 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750850] train/reward_avg 5.92 / train/cont_avg 1 / report/reward_avg 5.92 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[750900] train/reward_avg 5.48 / train/cont_avg 1 / report/reward_avg 5.48 / report/cont_avg 1 / timer/agent.policy_avg 5.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.4e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[750950] train/reward_avg 5.54 / train/cont_avg 1 / report/reward_avg 5.54 / report/cont_avg 1 / timer/agent.policy_avg 6.9e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.5e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751000] train/reward_avg 6.02 / train/cont_avg 1 / report/reward_avg 6.02 / report/cont_avg 1 / timer/agent.policy_avg 5.4e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751050] train/reward_avg 6.28 / train/cont_avg 1 / report/reward_avg 6.28 / report/cont_avg 1 / timer/agent.policy_avg 4.7e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751100] train/reward_avg 5.82 / train/cont_avg 1 / report/reward_avg 5.82 / report/cont_avg 1 / timer/agent.policy_avg 3.5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751150] train/reward_avg 6.27 / train/cont_avg 1 / report/reward_avg 6.27 / report/cont_avg 1 / timer/agent.policy_avg 4.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751200] train/reward_avg 6.09 / train/cont_avg 1 / report/reward_avg 6.09 / report/cont_avg 1 / timer/agent.policy_avg 3.7e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 37 C
+[751250] train/reward_avg 5.09 / train/cont_avg 1 / report/reward_avg 5.09 / report/cont_avg 1 / timer/agent.policy_avg 3.3e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751300] train/reward_avg 6.55 / train/cont_avg 1 / report/reward_avg 6.55 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751350] train/reward_avg 5.43 / train/cont_avg 1 / report/reward_avg 5.43 / report/cont_avg 1 / timer/agent.policy_avg 3.1e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751400] train/reward_avg 6.31 / train/cont_avg 1 / report/reward_avg 6.31 / report/cont_avg 1 / timer/agent.policy_avg 5.8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.4e-4 / timer/agent.train_avg 0.07 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 37 C
+[751450] train/reward_avg 6.64 / train/cont_avg 1 / report/reward_avg 6.64 / report/cont_avg 1 / timer/agent.policy_avg 3.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.07 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751500] train/reward_avg 5.76 / train/cont_avg 1 / report/reward_avg 5.76 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751550] train/reward_avg 5.23 / train/cont_avg 1 / report/reward_avg 5.23 / report/cont_avg 1 / timer/agent.policy_avg 5.2e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[751600] train/reward_avg 5.81 / train/cont_avg 1 / report/reward_avg 5.81 / report/cont_avg 1 / timer/agent.policy_avg 6.4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[751650] train/reward_avg 6.63 / train/cont_avg 1 / report/reward_avg 6.63 / report/cont_avg 1 / timer/agent.policy_avg 3.8e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[751700] train/reward_avg 6.67 / train/cont_avg 1 / report/reward_avg 6.67 / report/cont_avg 1 / timer/agent.policy_avg 3.2e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.7e-4 / timer/agent.train_avg 0.09 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751750] train/reward_avg 5.67 / train/cont_avg 1 / report/reward_avg 5.67 / report/cont_avg 1 / timer/agent.policy_avg 4e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[751800] train/reward_avg 5.82 / train/cont_avg 1 / report/reward_avg 5.82 / report/cont_avg 1 / timer/agent.policy_avg 5.1e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751850] train/reward_avg 5.93 / train/cont_avg 1 / report/reward_avg 5.93 / report/cont_avg 1 / timer/agent.policy_avg 3.7e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751900] train/reward_avg 5.4 / train/cont_avg 1 / report/reward_avg 5.4 / report/cont_avg 1 / timer/agent.policy_avg 3.7e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[751950] train/reward_avg 5.55 / train/cont_avg 1 / report/reward_avg 5.55 / report/cont_avg 1 / timer/agent.policy_avg 4.9e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752000] train/reward_avg 5.25 / train/cont_avg 1 / report/reward_avg 5.25 / report/cont_avg 1 / timer/agent.policy_avg 6.2e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752050] train/reward_avg 5.37 / train/cont_avg 1 / report/reward_avg 5.37 / report/cont_avg 1 / timer/agent.policy_avg 3.4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752100] train/reward_avg 5.61 / train/cont_avg 1 / report/reward_avg 5.61 / report/cont_avg 1 / timer/agent.policy_avg 7.1e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752150] train/reward_avg 5.93 / train/cont_avg 1 / report/reward_avg 5.93 / report/cont_avg 1 / timer/agent.policy_avg 5.4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752200] train/reward_avg 6.25 / train/cont_avg 1 / report/reward_avg 6.25 / report/cont_avg 1 / timer/agent.policy_avg 3.2e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752250] train/reward_avg 6.16 / train/cont_avg 1 / report/reward_avg 6.16 / report/cont_avg 1 / timer/agent.policy_avg 3.4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752300] train/reward_avg 5.78 / train/cont_avg 1 / report/reward_avg 5.78 / report/cont_avg 1 / timer/agent.policy_avg 3.6e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[752350] train/reward_avg 5.97 / train/cont_avg 1 / report/reward_avg 5.97 / report/cont_avg 1 / timer/agent.policy_avg 5.2e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752400] train/reward_avg 5.66 / train/cont_avg 1 / report/reward_avg 5.66 / report/cont_avg 1 / timer/agent.policy_avg 3.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+Saved episode: 20221112T171557-65b724365c7349de875dd9f7e82b8621-len40-rew224.npz
+[752450] train/reward_avg 5.62 / train/cont_avg 1 / report/reward_avg 5.62 / report/cont_avg 1 / timer/agent.policy_avg 4.9e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.07 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752500] train/reward_avg 5.53 / train/cont_avg 1 / report/reward_avg 5.53 / report/cont_avg 1 / timer/agent.policy_avg 8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.4e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752550] train/reward_avg 6.35 / train/cont_avg 1 / report/reward_avg 6.35 / report/cont_avg 1 / timer/agent.policy_avg 4.4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.08 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752600] train/reward_avg 6.58 / train/cont_avg 1 / report/reward_avg 6.58 / report/cont_avg 1 / timer/agent.policy_avg 5.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752650] train/reward_avg 5.27 / train/cont_avg 1 / report/reward_avg 5.27 / report/cont_avg 1 / timer/agent.policy_avg 4.3e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752700] train/reward_avg 6.11 / train/cont_avg 1 / report/reward_avg 6.11 / report/cont_avg 1 / timer/agent.policy_avg 4.5e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752750] train/reward_avg 5.71 / train/cont_avg 1 / report/reward_avg 5.71 / report/cont_avg 1 / timer/agent.policy_avg 6.5e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752800] train/reward_avg 6.41 / train/cont_avg 1 / report/reward_avg 6.41 / report/cont_avg 1 / timer/agent.policy_avg 5.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752850] train/reward_avg 6 / train/cont_avg 1 / report/reward_avg 6 / report/cont_avg 1 / timer/agent.policy_avg 3.6e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752900] train/reward_avg 5.1 / train/cont_avg 1 / report/reward_avg 5.1 / report/cont_avg 1 / timer/agent.policy_avg 5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[752950] train/reward_avg 6 / train/cont_avg 1 / report/reward_avg 6 / report/cont_avg 1 / timer/agent.policy_avg 4.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+Skipping short trajectory of length 11.
+[753000] train/reward_avg 5.95 / train/cont_avg 1 / report/reward_avg 5.95 / report/cont_avg 1 / timer/agent.policy_avg 3.9e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 1.7e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+Episode has 250 steps and return 1777.5.
+[753000] 
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753050] train/reward_avg 6.4 / train/cont_avg 1 / report/reward_avg 6.4 / report/cont_avg 1 / timer/agent.policy_avg 6.2e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.04 / timer/agent.report_avg 0.01
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753100] train/reward_avg 5.68 / train/cont_avg 1 / report/reward_avg 5.68 / report/cont_avg 1 / timer/agent.policy_avg 4.5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753150] train/reward_avg 5.74 / train/cont_avg 1 / report/reward_avg 5.74 / report/cont_avg 1 / timer/agent.policy_avg 4.9e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753200] train/reward_avg 6.14 / train/cont_avg 1 / report/reward_avg 6.14 / report/cont_avg 1 / timer/agent.policy_avg 5.2e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 38 C
+RL_lower_joint: 36 C
+[753250] train/reward_avg 6.14 / train/cont_avg 1 / report/reward_avg 6.14 / report/cont_avg 1 / timer/agent.policy_avg 3.5e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753300] train/reward_avg 6.37 / train/cont_avg 1 / report/reward_avg 6.37 / report/cont_avg 1 / timer/agent.policy_avg 4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753350] train/reward_avg 5.76 / train/cont_avg 1 / report/reward_avg 5.76 / report/cont_avg 1 / timer/agent.policy_avg 3.4e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 47 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[753400] train/reward_avg 5.38 / train/cont_avg 1 / report/reward_avg 5.38 / report/cont_avg 1 / timer/agent.policy_avg 4.9e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.07 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[753450] train/reward_avg 5.34 / train/cont_avg 1 / report/reward_avg 5.34 / report/cont_avg 1 / timer/agent.policy_avg 5.2e-3 / timer/env.step_avg 0.13 / timer/replay._sample_avg 1.9e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753500] train/reward_avg 6.64 / train/cont_avg 1 / report/reward_avg 6.64 / report/cont_avg 1 / timer/agent.policy_avg 3.6e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753550] train/reward_avg 6 / train/cont_avg 1 / report/reward_avg 6 / report/cont_avg 1 / timer/agent.policy_avg 3.2e-3 / timer/env.step_avg 0.12 / timer/replay._sample_avg 1.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753600] train/reward_avg 6.03 / train/cont_avg 1 / report/reward_avg 6.03 / report/cont_avg 1 / timer/agent.policy_avg 4.2e-3 / timer/env.step_avg 0.13 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 62 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753650] train/reward_avg 5.78 / train/cont_avg 1 / report/reward_avg 5.78 / report/cont_avg 1 / timer/agent.policy_avg 5.3e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.07 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753700] train/reward_avg 6.2 / train/cont_avg 1 / report/reward_avg 6.2 / report/cont_avg 1 / timer/agent.policy_avg 7.8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753750] train/reward_avg 5.4 / train/cont_avg 1 / report/reward_avg 5.4 / report/cont_avg 1 / timer/agent.policy_avg 3.1e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.04
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753800] train/reward_avg 5.74 / train/cont_avg 1 / report/reward_avg 5.74 / report/cont_avg 1 / timer/agent.policy_avg 3.4e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753850] train/reward_avg 5.92 / train/cont_avg 1 / report/reward_avg 5.92 / report/cont_avg 1 / timer/agent.policy_avg 5.5e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.4e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 43 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 60 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753900] train/reward_avg 5.69 / train/cont_avg 1 / report/reward_avg 5.69 / report/cont_avg 1 / timer/agent.policy_avg 5e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 1.8e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[753950] train/reward_avg 5.57 / train/cont_avg 1 / report/reward_avg 5.57 / report/cont_avg 1 / timer/agent.policy_avg 2.9e-3 / timer/env.step_avg 0.09 / timer/replay._sample_avg 2.3e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.03
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 37 C
+[754000] train/reward_avg 6.08 / train/cont_avg 1 / report/reward_avg 6.08 / report/cont_avg 1 / timer/agent.policy_avg 3.6e-3 / timer/env.step_avg 0.1 / timer/replay._sample_avg 2.2e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 61 C
+RR_hip_joint: 42 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[754050] train/reward_avg 5.52 / train/cont_avg 1 / report/reward_avg 5.52 / report/cont_avg 1 / timer/agent.policy_avg 4.8e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2e-4 / timer/agent.train_avg 0.05 / timer/agent.report_avg 0.02
+WARNING: Motors are getting hot. Temperatures:
+FR_hip_joint: 51 C
+FR_upper_joint: 50 C
+FR_lower_joint: 42 C
+FL_hip_joint: 61 C
+FL_upper_joint: 61 C
+FL_lower_joint: 60 C
+RR_hip_joint: 41 C
+RR_upper_joint: 44 C
+RR_lower_joint: 46 C
+RL_hip_joint: 38 C
+RL_upper_joint: 39 C
+RL_lower_joint: 36 C
+[754100] train/reward_avg 6.96 / train/cont_avg 1 / report/reward_avg 6.96 / report/cont_avg 1 / timer/agent.policy_avg 3.4e-3 / timer/env.step_avg 0.11 / timer/replay._sample_avg 2.1e-4 / timer/agent.train_avg 0.06 / timer/agent.report_avg 0.02
+^CTraceback (most recent call last):
+  File "embodied/agents/dreamerv3/train.py", line 150, in <module>
+    main()
+  File "embodied/agents/dreamerv3/train.py", line 67, in main
+    embodied.run.train(agent, env, replay, logger, args)
+  File "/root/daydreamer/embodied/run/train.py", line 102, in train
+    driver(policy, steps=args.eval_every)
+  File "/root/daydreamer/embodied/core/driver.py", line 42, in __call__
+    step, episode = self._step(policy, step, episode)
+  File "/root/daydreamer/embodied/core/driver.py", line 54, in _step
+    self._obs = self._env.step(acts)
+  File "/usr/lib/python3.8/contextlib.py", line 75, in inner
+    return func(*args, **kwds)
+  File "/root/daydreamer/embodied/core/batch.py", line 32, in step
+    obs.append(env.step(act))
+  File "/root/daydreamer/embodied/core/wrappers.py", line 39, in step
+    obs = self.env.step(action)
+  File "/root/daydreamer/embodied/core/wrappers.py", line 89, in step
+    return self.env.step({**action, self._key: orig})
+  File "/root/daydreamer/embodied/envs/a1.py", line 34, in step
+    obs = self._env.step(action)
+  File "/root/daydreamer/embodied/envs/gym.py", line 69, in step
+    obs, reward, self._done, self._info = self._env.step(action)
+  File "/root/daydreamer/motion_imitation/envs/env_wrappers/trajectory_generator_wrapper_env.py", line 74, in step
+    original_observation, reward, done, infos = self._gym_env.step(new_action)
+  File "/root/daydreamer/motion_imitation/envs/env_wrappers/observation_dictionary_to_array_wrapper.py", line 47, in step
+    observation_dict, reward, done, _ = self._gym_env.step(action)
+  File "/root/daydreamer/motion_imitation/envs/locomotion_gym_env.py", line 345, in step
+    self._robot.Step(action)
+  File "/root/daydreamer/motion_imitation/robots/a1_robot.py", line 371, in Step
+    super().Step(action, control_mode)
+  File "/root/daydreamer/motion_imitation/robots/minitaur.py", line 251, in Step
+    self._StepInternal(proc_action, control_mode)
+  File "/root/daydreamer/motion_imitation/robots/a1_robot.py", line 417, in _StepInternal
+    self.ApplyAction(action, motor_control_mode)
+  File "/root/daydreamer/motion_imitation/robots/a1_robot.py", line 307, in ApplyAction
+    self._robot_interface.send_command(command)
+KeyboardInterrupt
+^CException ignored in: <module 'threading' from '/usr/lib/python3.8/threading.py'>
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/threading.py", line 1388, in _shutdown
+    lock.acquire()
+KeyboardInterrupt: 
+^C^Croot@robot-dev5:~/daydreamer# 
+
+
