@@ -1,141 +1,241 @@
 import atexit
+import concurrent.futures
 import enum
-import functools
 import os
 import sys
 import time
 import traceback
-
-
-class Message(enum.Enum):
-
-  RUN = 2
-  RUN_WITH_STATE = 1
-  RESULT = 3
-  STOP = 4
-  ERROR = 5
+from functools import partial as bind
 
 
 class Worker:
 
-  INITIALIZERS = []
+  initializers = []
 
-  def __init__(self, strategy='process', daemon=True):
-    self._strategy = strategy
-    if strategy == 'process':
-      import multiprocessing as mp
-      mp = mp.get_context('spawn')
-      kw = dict(daemon=daemon)
-    elif strategy == 'thread':
-      # The downside of using threads is that they cannot truly run in parallel
-      # due to the Python GIL and that threads cannot be killed forcefully.
-      import multiprocessing.dummy as mp
-      kw = dict()
-    elif strategy == 'none':
-      self._result = None
-      self._state = {}
-    else:
-      raise NotImplementedError(strategy)
-    if self._strategy != 'none':
-      initializers = self.INITIALIZERS if (strategy == 'process') else []
-      self._pipe, pipe = mp.Pipe()
-      self._process = mp.Process(
-          target=self._loop, args=(pipe, initializers), **kw)
-      atexit.register(self.close)
-      self._process.start()
-      assert self._receive() == 'ready'
+  def __init__(self, fn, strategy='thread', state=False):
+    if not state:
+      fn = lambda s, *args, fn=fn, **kwargs: (s, fn(*args, **kwargs))
+    inits = self.initializers
+    self.impl = {
+        'blocking': BlockingWorker,
+        'thread': ThreadWorker,
+        'process': bind(ProcessPipeWorker, initializers=inits),
+        'daemon': bind(ProcessPipeWorker, initializers=inits, daemon=True),
+        'process_slow': bind(ProcessWorker, initializers=inits),
+    }[strategy](fn)
+    self.promise = None
 
-  def run(self, function, *args, **kwargs):
-    if self._strategy == 'none':
-      self._result = function(*args, **kwargs)
-      return lambda: self._result
+  def __call__(self, *args, **kwargs):
+    self.promise and self.promise()  # Raise previous exception if any.
+    self.promise = self.impl(*args, **kwargs)
+    return self.promise
+
+  def wait(self):
+    return self.impl.wait()
+
+  def close(self):
+    self.impl.close()
+
+
+class BlockingWorker:
+
+  def __init__(self, fn):
+    self.fn = fn
+    self.state = None
+
+  def __call__(self, *args, **kwargs):
+    self.state, result = self.fn(self.state, *args, **kwargs)
+    # return lambda: result
+    return lambda result=result: result
+
+  def wait(self):
+    pass
+
+  def close(self):
+    pass
+
+
+class ThreadWorker:
+
+  def __init__(self, fn):
+    self.fn = fn
+    self.state = None
+    self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    self.futures = []
+
+  def __call__(self, *args, **kwargs):
+    future = self.executor.submit(self._worker, *args, **kwargs)
+    self.futures.append(future)
+    future.add_done_callback(lambda f: self.futures.remove(f))
+    return future.result
+
+  def wait(self):
+    concurrent.futures.wait(self.futures)
+
+  def close(self):
+    self.executor.shutdown(wait=False, cancel_futures=True)
+
+  def _worker(self, *args, **kwargs):
+    self.state, output = self.fn(self.state, *args, **kwargs)
+    return output
+
+
+class ProcessWorker:
+
+  def __init__(self, fn, initializers=()):
     import cloudpickle
-    if args or kwargs:
-      function = functools.partial(function, *args, **kwargs)
-    function = cloudpickle.dumps(function)
-    self._pipe.send((Message.RUN, function))
-    return self._receive  # Callable promise.
+    import multiprocessing
+    fn = cloudpickle.dumps(fn)
+    initializers = cloudpickle.dumps(initializers)
+    self.executor = concurrent.futures.ProcessPoolExecutor(
+        max_workers=1, mp_context=multiprocessing.get_context('spawn'),
+        initializer=self._initializer, initargs=(fn, initializers))
+    self.futures = []
 
-  def run_with_state(self, function, *args, **kwargs):
-    if self._strategy == 'none':
-      self._result = function(*args, **kwargs, state=self._state)
-      return lambda: self._result
+  def __call__(self, *args, **kwargs):
+    future = self.executor.submit(self._worker, *args, **kwargs)
+    self.futures.append(future)
+    future.add_done_callback(lambda f: self.futures.remove(f))
+    return future.result
+
+  def wait(self):
+    concurrent.futures.wait(self.futures)
+
+  def close(self):
+    self.executor.shutdown(wait=False, cancel_futures=True)
+
+  @staticmethod
+  def _initializer(fn, initializers):
+    global _FN, _STATE
     import cloudpickle
-    if args or kwargs:
-      function = functools.partial(function, *args, **kwargs)
-    function = cloudpickle.dumps(function)
-    self._pipe.send((Message.RUN_WITH_STATE, function))
-    return self._receive  # Callable promise.
+    _FN = cloudpickle.loads(fn)
+    _STATE = None
+    for initializer in cloudpickle.loads(initializers):
+      initializers()
+
+  @staticmethod
+  def _worker(*args, **kwargs):
+    global _FN, _STATE
+    _STATE, output = _FN(_STATE, *args, **kwargs)
+    return output
+
+
+class ProcessPipeWorker:
+
+  def __init__(self, fn, initializers=(), daemon=False):
+    import multiprocessing
+    import cloudpickle
+    self._context = multiprocessing.get_context('spawn')
+    self._pipe, pipe = self._context.Pipe()
+    fn = cloudpickle.dumps(fn)
+    initializers = cloudpickle.dumps(initializers)
+    self._process = self._context.Process(
+        target=self._loop,
+        args=(pipe, fn, initializers),
+        daemon=daemon)
+    self._process.start()
+    self._nextid = 0
+    self._results = {}
+    assert self._submit(Message.OK)()
+    atexit.register(self.close)
+
+  def __call__(self, *args, **kwargs):
+    return self._submit(Message.RUN, (args, kwargs))
+
+  def wait(self):
+    pass
 
   def close(self):
     try:
-      self._pipe.send((Message.STOP, None))
+      self._pipe.send((Message.STOP, self._nextid, None))
       self._pipe.close()
     except (AttributeError, IOError):
       pass  # The connection was already closed.
     try:
       self._process.join(0.1)
-      if self._strategy == 'process' and self._process.exitcode is None:
+      if self._process.exitcode is None:
         try:
           os.kill(self._process.pid, 9)
           time.sleep(0.1)
-        except Exception as e:
-          print(f'Exception: {e}')
+        except Exception:
+          pass
     except (AttributeError, AssertionError):
       pass
 
-  @classmethod
-  def add_initializer(cls, function):
-    import cloudpickle
-    function = cloudpickle.dumps(function)
-    cls.INITIALIZERS.append(function)
+  def _submit(self, message, payload=None):
+    callid = self._nextid
+    self._nextid += 1
+    self._pipe.send((message, callid, payload))
+    return Future(self._receive, callid)
 
-  def _receive(self):
-    try:
-      message, payload = self._pipe.recv()
-    except (OSError, EOFError):
-      raise RuntimeError('Lost connection to worker.')
-    if message == Message.ERROR:
-      raise Exception(payload)
-    elif message == Message.RESULT:
-      return payload
-    else:
-      raise KeyError(f'Unknown message type {message}.')
+  def _receive(self, callid):
+    while callid not in self._results:
+      try:
+        message, callid, payload = self._pipe.recv()
+      except (OSError, EOFError):
+        raise RuntimeError('Lost connection to worker.')
+      if message == Message.ERROR:
+        raise Exception(payload)
+      assert message == Message.RESULT, message
+      self._results[callid] = payload
+    return self._results.pop(callid)
 
-  @classmethod
-  def _loop(cls, pipe, initializers):
+  @staticmethod
+  def _loop(pipe, function, initializers):
     try:
+      callid = None
+      state = None
       import cloudpickle
-      state = {}
-      for function in initializers:
-        function = cloudpickle.loads(function)
-        function()
-      pipe.send((Message.RESULT, 'ready'))
+      initializers = cloudpickle.loads(initializers)
+      function = cloudpickle.loads(function)
+      [fn() for fn in initializers]
       while True:
         if not pipe.poll(0.1):
           continue  # Wake up for keyboard interrupts.
-        message, payload = pipe.recv()
-        if message == Message.STOP:
+        message, callid, payload = pipe.recv()
+        if message == Message.OK:
+          pipe.send((Message.RESULT, callid, True))
+        elif message == Message.STOP:
           return
         elif message == Message.RUN:
-          function = cloudpickle.loads(payload)
-          result = function()
-          pipe.send((Message.RESULT, result))
-        elif message == Message.RUN_WITH_STATE:
-          function = cloudpickle.loads(payload)
-          result = function(state=state)
-          pipe.send((Message.RESULT, result))
+          args, kwargs = payload
+          state, result = function(state, *args, **kwargs)
+          pipe.send((Message.RESULT, callid, result))
         else:
-          raise RuntimeError(f'Invalid message: {message}')
+          raise KeyError(f'Invalid message: {message}')
     except (EOFError, KeyboardInterrupt):
       return
     except Exception:
       stacktrace = ''.join(traceback.format_exception(*sys.exc_info()))
-      print(f'Error inside worker: {stacktrace}.', flush=True)
-      pipe.send((Message.ERROR, stacktrace))
+      print(f'Error inside process worker: {stacktrace}.', flush=True)
+      pipe.send((Message.ERROR, callid, stacktrace))
       return
     finally:
       try:
         pipe.close()
       except Exception:
         pass
+
+
+class Future:
+
+  def __init__(self, receive, callid):
+    self._receive = receive
+    self._callid = callid
+    self._result = None
+    self._complete = False
+
+  def __call__(self):
+    if not self._complete:
+      self._result = self._receive(self._callid)
+      self._complete = True
+    return self._result
+
+
+class Message(enum.Enum):
+
+  OK = 1
+  RUN = 2
+  RESULT = 3
+  STOP = 4
+  ERROR = 5

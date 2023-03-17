@@ -7,26 +7,23 @@ class Atari(embodied.Env):
   LOCK = None
 
   def __init__(
-      self, name, repeat=4, size=(84, 84), gray=True, noops=30, lives=False,
-      sticky=True, actions='all', length=108000, seed=None):
+      self, name, repeat=4, size=(84, 84), gray=True, noops=0, lives='unused',
+      sticky=True, actions='all', length=108000, resize='opencv', seed=None):
     assert size[0] == size[1]
-
+    assert lives in ('unused', 'discount', 'reset'), lives
+    assert actions in ('all', 'needed'), actions
+    assert resize in ('opencv', 'pillow'), resize
     if self.LOCK is None:
       import multiprocessing as mp
       mp = mp.get_context('spawn')
       self.LOCK = mp.Lock()
-
-    import cv2
-    self._cv2 = cv2
-
-    # if 'ATARI_ROMS' in os.environ:  # TODO
-    #   import absl.flags
-    #   import atari_py  # noqa: For flag definition.
-    #   absl.flags.FLAGS.atari_roms_path = os.environ['ATARI_ROMS']
-
-    # from PIL import Image
-    # self._image = Image
-
+    self._resize = resize
+    if self._resize == 'opencv':
+      import cv2
+      self._cv2 = cv2
+    if self._resize == 'pillow':
+      from PIL import Image
+      self._image = Image
     import gym.envs.atari
     if name == 'james_bond':
       name = 'jamesbond'
@@ -41,17 +38,12 @@ class Atari(embodied.Env):
     with self.LOCK:
       self._env = gym.envs.atari.AtariEnv(
           game=name,
-          obs_type='image',  # TODO: Internal old version.
-          # obs_type='grayscale' if gray else 'rgb',
+          obs_type='image',
           frameskip=1, repeat_action_probability=0.25 if sticky else 0.0,
           full_action_space=(actions == 'all'))
     assert self._env.unwrapped.get_action_meanings()[0] == 'NOOP'
-    if gray:
-      shape = self._env.observation_space.shape[:2]
-      self._buffer = [np.empty(shape, np.uint8) for _ in range(2)]
-    else:
-      shape = self._env.observation_space.shape
-      self._buffer = [np.empty(shape, np.uint8) for _ in range(2)]
+    shape = self._env.observation_space.shape
+    self._buffer = [np.zeros(shape, np.uint8) for _ in range(2)]
     self._ale = self._env.unwrapped.ale
     self._last_lives = None
     self._done = True
@@ -62,7 +54,6 @@ class Atari(embodied.Env):
     shape = self._size + (1 if self._gray else 3,)
     return {
         'image': embodied.Space(np.uint8, shape),
-        # 'ram': embodied.Space(np.uint8, 128),
         'reward': embodied.Space(np.float32),
         'is_first': embodied.Space(bool),
         'is_last': embodied.Space(bool),
@@ -93,7 +84,7 @@ class Atari(embodied.Env):
         self._screen(self._buffer[1])
       if over:
         break
-      if self._lives:
+      if self._lives != 'unused':
         current = self._ale.lives()
         if current < self._last_lives:
           dead = True
@@ -103,12 +94,15 @@ class Atari(embodied.Env):
       self._buffer[1][:] = self._buffer[0][:]
     self._screen(self._buffer[0])
     self._done = over or (self._length and self._step >= self._length)
-    return self._obs(total, is_last=self._done, is_terminal=dead or over)
+    return self._obs(
+        total,
+        is_last=self._done or (dead and self._lives == 'reset'),
+        is_terminal=dead or over)
 
   def _reset(self):
     self._env.reset()
     if self._noops:
-      for _ in range(self._random.randint(1, self._noops + 1)):
+      for _ in range(self._random.randint(self._noops)):
          _, _, dead, _ = self._env.step(0)
          if dead:
            self._env.reset()
@@ -118,20 +112,21 @@ class Atari(embodied.Env):
 
   def _obs(self, reward, is_first=False, is_last=False, is_terminal=False):
     np.maximum(self._buffer[0], self._buffer[1], out=self._buffer[0])
-
-    # image = self._image.fromarray(self._buffer[0])
-    # image = image.resize(self._size, self._image.NEAREST)
-    # image = np.array(image)
-
-    image = self._cv2.resize(
-        self._buffer[0], self._size,
-        interpolation=self._cv2.INTER_AREA)
-
+    image = self._buffer[0]
+    if image.shape[:2] != self._size:
+      if self._resize == 'opencv':
+        image = self._cv2.resize(
+            image, self._size, interpolation=self._cv2.INTER_AREA)
+      if self._resize == 'pillow':
+        image = self._image.fromarray(image)
+        image = image.resize(self._size, self._image.NEAREST)
+        image = np.array(image)
     if self._gray:
+      weights = [0.299, 0.587, 1 - (0.299 + 0.587)]
+      image = np.tensordot(image, weights, (-1, 0)).astype(image.dtype)
       image = image[:, :, None]
     return dict(
         image=image,
-        # ram=self._env.env._get_ram(),
         reward=reward,
         is_first=is_first,
         is_last=is_last,
@@ -139,10 +134,7 @@ class Atari(embodied.Env):
     )
 
   def _screen(self, array):
-    if self._gray:
-      self._ale.getScreenGrayscale(array)
-    else:
-      self._ale.getScreenRGB2(array)
+    self._ale.getScreenRGB2(array)
 
   def close(self):
     return self._env.close()

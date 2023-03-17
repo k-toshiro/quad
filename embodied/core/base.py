@@ -6,9 +6,8 @@ class Agent:
     pass
 
   def dataset(self, generator_fn):
-    # TODO: Go from iterable to iterable instead.
     raise NotImplementedError(
-        'dataset(generator_fn) -> iterable')
+        'dataset(generator_fn) -> generator_fn')
 
   def policy(self, obs, state=None, mode='train'):
     raise NotImplementedError(
@@ -28,12 +27,19 @@ class Agent:
   def load(self, data):
     raise NotImplementedError('load(data) -> None')
 
+  def sync(self):
+    # This method allows the agent to sync parameters from its training devices
+    # to its policy devices in the case of a multi-device agent.
+    pass
+
 
 class Env:
 
   def __len__(self):
-    # Return positive integer for batched envs.
-    return 0
+    return 0  # Return positive integer for batched envs.
+
+  def __bool__(self):
+    return True  # Env is always truthy, despite length zero.
 
   def __repr__(self):
     return (
@@ -72,6 +78,9 @@ class Wrapper:
 
   def __len__(self):
     return len(self.env)
+
+  def __bool__(self):
+    return bool(self.env)
 
   def __getattr__(self, name):
     if name.startswith('__'):

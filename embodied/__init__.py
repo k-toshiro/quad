@@ -1,6 +1,3 @@
-import pathlib
-import sys
-
 try:
   import rich.traceback
   rich.traceback.install()

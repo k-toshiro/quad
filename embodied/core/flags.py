@@ -52,7 +52,7 @@ class Flags:
       return
     if not key:
       vals = ', '.join(f"'{x}'" for x in vals)
-      raise ValueError(f"Values {vals} were not preceeded by any flag.")
+      raise ValueError(f"Values {vals} were not preceded by any flag.")
     name = key[len('--'):]
     if '=' in name:
       remaining.extend([key] + vals)
@@ -96,4 +96,7 @@ class Flags:
         message = f"Expected int but got float '{value}' for key '{key}'."
         raise TypeError(message)
       return int(value)
+    if isinstance(default, dict):
+      raise TypeError(
+          f"Key '{key}' refers to a whole dict. Please speicfy a subkey.")
     return type(default)(value)

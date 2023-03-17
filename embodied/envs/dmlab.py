@@ -1,12 +1,10 @@
-import os
-
 import embodied
 import numpy as np
 
 
 class DMLab(embodied.Env):
 
-  # Original action set used by IMPALA.
+  # Small action set used by IMPALA.
   IMPALA_ACTION_SET = (
       (  0, 0,  0,  1, 0, 0, 0),  # Forward
       (  0, 0,  0, -1, 0, 0, 0),  # Backward
@@ -19,7 +17,7 @@ class DMLab(embodied.Env):
       (  0, 0,  0,  0, 1, 0, 0),  # Fire
   )
 
-  # Larger action set used by PopArt and R2D2.
+  # Large action set used by PopArt and R2D2.
   POPART_ACTION_SET = [
       (  0,   0,  0,  1, 0, 0, 0),  # FW
       (  0,   0,  0, -1, 0, 0, 0),  # BW
@@ -42,13 +40,6 @@ class DMLab(embodied.Env):
       self, level, repeat=4, size=(64, 64), mode='train',
       action_set=IMPALA_ACTION_SET, episodic=True, seed=None):
     import deepmind_lab
-    # try:
-    #   import deepmind_lab
-    # except ImportError:
-    #   from google3.third_party.labyrinth.python import deepmind_lab
-    #   path = os.environ.get('DMLAB_PATH', None)
-    #   if path:
-    #     deepmind_lab.set_runfiles_path(path)
     cache = None
     # path = os.environ.get('DMLAB_CACHE', None)
     # if path:
@@ -68,7 +59,8 @@ class DMLab(embodied.Env):
       raise NotImplementedError(mode)
     config = {k: str(v) for k, v in config.items()}
     self._env = deepmind_lab.Lab(
-        level=level, observations=['RGB_INTERLEAVED'],
+        level='contributed/dmlab30/' + level,
+        observations=['RGB_INTERLEAVED'],
         level_cache=cache, config=config)
     self._prev_image = None
     self._done = True
@@ -134,10 +126,8 @@ class Cache:
     path = self.get_path(key)
     try:
       tf.io.gfile.copy(path, pk3_path, overwrite=True)
-      # print('DMLab cache found level.')
       return True
     except tf.errors.OpError:
-      # print('DMLab cache did not find level.')
       return False
 
   def write(self, key, pk3_path):
@@ -148,6 +138,5 @@ class Cache:
       if not tf.io.gfile.exists(path):
         tf.io.gfile.makedirs(os.path.dirname(path))
         tf.io.gfile.copy(pk3_path, path)
-        # print('DMLab cache stored level.')
     except Exception as e:
       print(f'Could to store level: {e}')

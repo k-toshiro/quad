@@ -15,13 +15,8 @@ class TimeLimit(base.Wrapper):
     self._reset = reset
     self._step = 0
     self._done = False
-    # self._prev = time.time()
 
   def step(self, action):
-
-    # print(self._step, time.time() - self._prev)
-    # self._prev = time.time()
-
     if action['reset'] or self._done:
       self._step = 0
       self._done = False
@@ -34,11 +29,7 @@ class TimeLimit(base.Wrapper):
         obs['is_first'] = True
         return obs
     self._step += 1
-
-    # before = time.time()
     obs = self.env.step(action)
-    # print('  robot only:', time.time() - before)
-
     if self._duration and self._step >= self._duration:
       obs['is_last'] = True
     self._done = obs['is_last']
@@ -61,9 +52,22 @@ class ActionRepeat(base.Wrapper):
       reward += obs['reward']
       if obs['is_last'] or obs['is_terminal']:
         break
-    obs['reward'] = reward
+    obs['reward'] = np.float32(reward)
     self._done = obs['is_last']
     return obs
+
+
+class ClipAction(base.Wrapper):
+
+  def __init__(self, env, key='action', low=-1, high=1):
+    super().__init__(env)
+    self._key = key
+    self._low = low
+    self._high = high
+
+  def step(self, action):
+    clipped = np.clip(action[self._key], self._low, self._high)
+    return self.env.step({**action, self._key: clipped})
 
 
 class NormalizeAction(base.Wrapper):
@@ -71,16 +75,16 @@ class NormalizeAction(base.Wrapper):
   def __init__(self, env, key='action'):
     super().__init__(env)
     self._key = key
-    space = env.act_space[key]
-    self._mask = np.isfinite(space.low) & np.isfinite(space.high)
-    self._low = np.where(self._mask, space.low, -1)
-    self._high = np.where(self._mask, space.high, 1)
+    self._space = env.act_space[key]
+    self._mask = np.isfinite(self._space.low) & np.isfinite(self._space.high)
+    self._low = np.where(self._mask, self._space.low, -1)
+    self._high = np.where(self._mask, self._space.high, 1)
 
-  @property
+  @functools.cached_property
   def act_space(self):
     low = np.where(self._mask, -np.ones_like(self._low), self._low)
     high = np.where(self._mask, np.ones_like(self._low), self._high)
-    space = spacelib.Space(np.float32, None, low, high)
+    space = spacelib.Space(np.float32, self._space.shape, low, high)
     return {**self.env.act_space, self._key: space}
 
   def step(self, action):
@@ -96,19 +100,19 @@ class OneHotAction(base.Wrapper):
     self._count = int(env.act_space[key].high)
     self._key = key
 
-  @property
+  @functools.cached_property
   def act_space(self):
     shape = (self._count,)
     space = spacelib.Space(np.float32, shape, 0, 1)
     space.sample = functools.partial(self._sample_action, self._count)
-    space.discrete = True
+    space._discrete = True
     return {**self.env.act_space, self._key: space}
 
   def step(self, action):
     if not action['reset']:
-      assert (action[self._key].min() == 0.0).all(), action
-      assert (action[self._key].max() == 1.0).all(), action
-      assert (action[self._key].sum() == 1.0).all(), action
+      assert action[self._key].min() == 0.0, action
+      assert action[self._key].max() == 1.0, action
+      assert action[self._key].sum() == 1.0, action
     index = np.argmax(action[self._key])
     return self.env.step({**action, self._key: index})
 
@@ -120,6 +124,125 @@ class OneHotAction(base.Wrapper):
     return action
 
 
+class ExpandScalars(base.Wrapper):
+
+  def __init__(self, env):
+    super().__init__(env)
+    self._obs_expanded = []
+    self._obs_space = {}
+    for key, space in self.env.obs_space.items():
+      if space.shape == () and key != 'reward' and not space.discrete:
+        space = spacelib.Space(space.dtype, (1,), space.low, space.high)
+        self._obs_expanded.append(key)
+      self._obs_space[key] = space
+    self._act_expanded = []
+    self._act_space = {}
+    for key, space in self.env.act_space.items():
+      if space.shape == () and not space.discrete:
+        space = spacelib.Space(space.dtype, (1,), space.low, space.high)
+        self._act_expanded.append(key)
+      self._act_space[key] = space
+
+  @functools.cached_property
+  def obs_space(self):
+    return self._obs_space
+
+  @functools.cached_property
+  def act_space(self):
+    return self._act_space
+
+  def step(self, action):
+    action = {
+        key: np.squeeze(value, 0) if key in self._act_expanded else value
+        for key, value in action.items()}
+    obs = self.env.step(action)
+    obs = {
+        key: np.expand_dims(value, 0) if key in self._obs_expanded else value
+        for key, value in obs.items()}
+    return obs
+
+
+class FlattenTwoDimObs(base.Wrapper):
+
+  def __init__(self, env):
+    super().__init__(env)
+    self._keys = []
+    self._obs_space = {}
+    for key, space in self.env.obs_space.items():
+      if len(space.shape) == 2:
+        space = spacelib.Space(
+            space.dtype,
+            (int(np.prod(space.shape)),),
+            space.low.flatten(),
+            space.high.flatten())
+        self._keys.append(key)
+      self._obs_space[key] = space
+
+  @functools.cached_property
+  def obs_space(self):
+    return self._obs_space
+
+  def step(self, action):
+    obs = self.env.step(action).copy()
+    for key in self._keys:
+      obs[key] = obs[key].flatten()
+    return obs
+
+
+class FlattenTwoDimActions(base.Wrapper):
+
+  def __init__(self, env):
+    super().__init__(env)
+    self._origs = {}
+    self._act_space = {}
+    for key, space in self.env.act_space.items():
+      if len(space.shape) == 2:
+        space = spacelib.Space(
+            space.dtype,
+            (int(np.prod(space.shape)),),
+            space.low.flatten(),
+            space.high.flatten())
+        self._origs[key] = space.shape
+      self._act_space[key] = space
+
+  @functools.cached_property
+  def act_space(self):
+    return self._act_space
+
+  def step(self, action):
+    action = action.copy()
+    for key, shape in self._origs.items():
+      action[key] = action[key].reshape(shape)
+    return self.env.step(action)
+
+
+class CheckSpaces(base.Wrapper):
+
+  def __init__(self, env):
+    super().__init__(env)
+
+  def step(self, action):
+    for key, value in action.items():
+      self._check(value, self.env.act_space[key], key)
+    obs = self.env.step(action)
+    for key, value in obs.items():
+      self._check(value, self.env.obs_space[key], key)
+    return obs
+
+  def _check(self, value, space, key):
+    if not isinstance(value, (
+        np.ndarray, np.generic, list, tuple, int, float, bool)):
+      raise TypeError(f'Invalid type {type(value)} for key {key}.')
+    if value in space:
+      return
+    dtype = np.array(value).dtype
+    shape = np.array(value).shape
+    lowest, highest = np.min(value), np.max(value)
+    raise ValueError(
+        f"Value for '{key}' with dtype {dtype}, shape {shape}, "
+        f"lowest {lowest}, highest {highest} is not in {space}.")
+
+
 class DiscretizeAction(base.Wrapper):
 
   def __init__(self, env, key='action', bins=5):
@@ -128,13 +251,13 @@ class DiscretizeAction(base.Wrapper):
     self._values = np.linspace(-1, 1, bins)
     self._key = key
 
-  @property
+  @functools.cached_property
   def act_space(self):
     shape = (self._dims, len(self._values))
     space = spacelib.Space(np.float32, shape, 0, 1)
     space.sample = functools.partial(
         self._sample_action, self._dims, self._values)
-    space.discrete = True
+    space._discrete = True
     return {**self.env.act_space, self._key: space}
 
   def step(self, action):
@@ -167,7 +290,7 @@ class ResizeImage(base.Wrapper):
       from PIL import Image
       self._Image = Image
 
-  @property
+  @functools.cached_property
   def obs_space(self):
     spaces = self.env.obs_space
     for key in self._keys:
@@ -195,7 +318,7 @@ class RenderImage(base.Wrapper):
     self._key = key
     self._shape = self.env.render().shape
 
-  @property
+  @functools.cached_property
   def obs_space(self):
     spaces = self.env.obs_space
     spaces[self._key] = spacelib.Space(np.uint8, self._shape)

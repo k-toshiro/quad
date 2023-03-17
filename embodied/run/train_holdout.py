@@ -4,8 +4,7 @@ import embodied
 import numpy as np
 
 
-def train_eval(
-    agent, train_env, eval_env, train_replay, eval_replay, logger, args):
+def train_holdout(agent, env, train_replay, eval_replay, logger, args):
 
   logdir = embodied.Path(args.logdir)
   logdir.mkdirs()
@@ -14,28 +13,27 @@ def train_eval(
   should_train = embodied.when.Ratio(args.train_ratio / args.batch_steps)
   should_log = embodied.when.Clock(args.log_every)
   should_save = embodied.when.Clock(args.save_every)
-  should_eval = embodied.when.Every(args.eval_every, args.eval_initial)
   should_sync = embodied.when.Every(args.sync_every)
   step = logger.step
   updates = embodied.Counter()
   metrics = embodied.Metrics()
-  print('Observation space:', embodied.format(train_env.obs_space), sep='\n')
-  print('Action space:', embodied.format(train_env.act_space), sep='\n')
+  print('Observation space:', embodied.format(env.obs_space), sep='\n')
+  print('Action space:', embodied.format(env.act_space), sep='\n')
 
   timer = embodied.Timer()
   timer.wrap('agent', agent, ['policy', 'train', 'report', 'save'])
-  timer.wrap('env', train_env, ['step'])
+  timer.wrap('env', env, ['step'])
   if hasattr(train_replay, '_sample'):
     timer.wrap('replay', train_replay, ['_sample'])
 
   nonzeros = set()
-  def per_episode(ep, mode):
+  def per_episode(ep):
     length = len(ep['reward']) - 1
     score = float(ep['reward'].astype(np.float64).sum())
     logger.add({
         'length': length, 'score': score,
         'reward_rate': (ep['reward'] - ep['reward'].min() >= 0.1).mean(),
-    }, prefix=('episode' if mode == 'train' else f'{mode}_episode'))
+    }, prefix='episode')
     print(f'Episode has {length} steps and return {score:.1f}.')
     stats = {}
     for key in args.log_keys_video:
@@ -51,23 +49,25 @@ def train_eval(
         stats[f'mean_{key}'] = ep[key].mean()
       if re.match(args.log_keys_max, key):
         stats[f'max_{key}'] = ep[key].max(0).mean()
-    metrics.add(stats, prefix=f'{mode}_stats')
+    metrics.add(stats, prefix='stats')
 
-  driver_train = embodied.Driver(train_env)
-  driver_train.on_episode(lambda ep, worker: per_episode(ep, mode='train'))
-  driver_train.on_step(lambda tran, _: step.increment())
-  driver_train.on_step(train_replay.add)
-  driver_eval = embodied.Driver(eval_env)
+  driver = embodied.Driver(env)
+  driver.on_episode(lambda ep, worker: per_episode(ep))
+  driver.on_step(lambda tran, _: step.increment())
+  driver.on_step(train_replay.add)
+
+  print('Fill eval dataset.')
+  driver_eval = embodied.Driver(env)
   driver_eval.on_step(eval_replay.add)
-  driver_eval.on_episode(lambda ep, worker: per_episode(ep, mode='eval'))
-
-  random_agent = embodied.RandomAgent(train_env.act_space)
+  random_agent = embodied.RandomAgent(env.act_space)
+  while len(eval_replay) < max(args.batch_steps, args.eval_fill):
+    print(len(eval_replay), max(args.batch_steps, args.eval_fill))
+    driver_eval(random_agent.policy, steps=100)
+  del driver_eval
   print('Prefill train dataset.')
   while len(train_replay) < max(args.batch_steps, args.train_fill):
-    driver_train(random_agent.policy, steps=100)
-  print('Prefill eval dataset.')
-  while len(eval_replay) < max(args.batch_steps, args.eval_fill):
-    driver_eval(random_agent.policy, steps=100)
+    print(len(train_replay), max(args.batch_steps, args.train_fill))
+    driver(random_agent.policy, steps=100)
   logger.add(metrics.result())
   logger.write()
 
@@ -96,7 +96,7 @@ def train_eval(
       logger.add(eval_replay.stats, prefix='eval_replay')
       logger.add(timer.stats(), prefix='timer')
       logger.write(fps=True)
-  driver_train.on_step(train_step)
+  driver.on_step(train_step)
 
   checkpoint = embodied.Checkpoint(logdir / 'checkpoint.ckpt')
   checkpoint.step = step
@@ -109,15 +109,18 @@ def train_eval(
   should_save(step)  # Register that we jused saved.
 
   print('Start training loop.')
-  policy_train = lambda *args: agent.policy(
+  policy = lambda *args: agent.policy(
       *args, mode='explore' if should_expl(step) else 'train')
-  policy_eval = lambda *args: agent.policy(*args, mode='eval')
   while step < args.steps:
-    if should_eval(step):
-      print('Starting evaluation at step', int(step))
-      driver_eval.reset()
-      driver_eval(policy_eval, episodes=max(len(eval_env), args.eval_eps))
-    driver_train(policy_train, steps=100)
+    # scalars = collections.defaultdict(list)
+    # for _ in range(args.eval_samples):
+    #   for key, value in agent.report(next(dataset_eval)).items():
+    #     if value.shape == ():
+    #       scalars[key].append(value)
+    # for name, values in scalars.items():
+    #   logger.scalar(f'eval/{name}', np.array(values, np.float64).mean())
+    # logger.write()
+    driver(policy, steps=100)
     if should_save(step):
       checkpoint.save()
   logger.write()
